@@ -74,7 +74,7 @@ const questions = [
 ];
 
  // call GitHub api
- const axios = require('axios');
+const axios = require('axios');
 
 const api = {
   async getUser(userResponses) {
@@ -127,6 +127,6 @@ async function init() {
      } catch (error) {
          console.log(error);
      }
- };
-}
-init(); 
+ }
+};
+init();
