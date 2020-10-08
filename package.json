@@ -9,6 +9,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.20.0",
     "inquirer": "^6.5.2"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ktinj/Read-Me-Generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ktinj/Read-Me-Generator/issues"
+  },
+  "homepage": "https://github.com/ktinj/Read-Me-Generator#readme"
 }
