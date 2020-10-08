@@ -1,6 +1,6 @@
 function generateMarkdown(userResponses, userInfo) {
 
-  // Generate Table of Contents conditionally based on userResponses
+  // generate table of cntents
   let tableContents = `## Table of Contents`;
 
   if (userResponses.installation !== '') { tableContents += `
@@ -16,7 +16,7 @@ function generateMarkdown(userResponses, userInfo) {
   * [Tests](#tests)` };
 
 
-  // Generate markdown for the README
+  // markdown for the README
   let draftMarkdown = 
   `# ${userResponses.title}
   ![Badge for GitHub repo top language](https://img.shields.io/github/languages/top/${userResponses.username}/${userResponses.repo}?style=flat&logo=appveyor) ![Badge for GitHub last commit](https://img.shields.io/github/last-commit/${userResponses.username}/${userResponses.repo}?style=flat&logo=appveyor)
@@ -27,15 +27,15 @@ function generateMarkdown(userResponses, userInfo) {
   ${userResponses.description}
   `
 
-  // Add Table of Contents to markdown
+  // add table of contents to markdown
   draftMarkdown += tableContents;
  
-  // Add License section since License is required to Table of Contents
+  // add license section since
   draftMarkdown += `
   * [License](#license)`;
   
 
-  // Optional Installation section
+  // installation 
   if (userResponses.installation !== '') {
   
   draftMarkdown +=
@@ -45,7 +45,7 @@ function generateMarkdown(userResponses, userInfo) {
   ${userResponses.installation}`
   };
   
-  // Usage section
+  // usage 
   if (userResponses.usage !== '') {
   
   draftMarkdown +=
@@ -57,7 +57,7 @@ function generateMarkdown(userResponses, userInfo) {
   };
   
   
-  // Contributing section
+  // contributing 
   if (userResponses.contributing !== '') {
   `
   
@@ -67,7 +67,7 @@ function generateMarkdown(userResponses, userInfo) {
   };
   
 
-  // Tests section
+  // tests 
   if (userResponses.tests !== '') {
   
   draftMarkdown +=
@@ -80,7 +80,7 @@ function generateMarkdown(userResponses, userInfo) {
   };
 
 
-  // License section is required
+  // license 
   draftMarkdown +=
   `
   
@@ -90,7 +90,7 @@ function generateMarkdown(userResponses, userInfo) {
   `;
 
 
-  // Questions / About Developer section
+  // questions 
   let draftDev = 
   `
   ---
@@ -102,7 +102,7 @@ function generateMarkdown(userResponses, userInfo) {
   GitHub: [@${userInfo.login}](${userInfo.url})
   `;
 
-  // If GitHub email is not null, add to Developer section
+  
   if (userInfo.email !== null) {
   
   draftDev +=
@@ -110,10 +110,8 @@ function generateMarkdown(userResponses, userInfo) {
   Email: ${userInfo.email}
   `};
 
-  // Add developer section to markdown
-  draftMarkdown += draftDev;
 
-  // Return markdown
+  draftMarkdown += draftDev;
   return draftMarkdown;
   
 }
