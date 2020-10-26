@@ -1,119 +1,81 @@
-function generateMarkdown(userResponses, userInfo) {
+// GitHub badge
+function renderLicenseBadge(license) {
+  if (license !== "None") {
+    return `![GitHub license](https://img.shields.io/badge/license-${license}-blue.svg)`
+  }
+  return ''
+}
 
-  // generate table of cntents
-  let tableContents = `## Table of Contents`;
+// License
+function renderLicenseLink(license) {
+  if (license !== "None") {
+    return (
+      `\n* [License](#license)\n`
+    )
+  }
+  return ''
+}
 
-  if (userResponses.installation !== '') { tableContents += `
-  * [Installation](#installation)` };
+function renderLicenseSection(license) {
+  if (license !== "None") {
+    return (
+      `## License
 
-  if (userResponses.usage !== '') { tableContents += `
-  * [Usage](#usage)` };
+This project is licensed under the ${license} license.`
+    )
+  }
+  return ''
+}
 
-  if (userResponses.contributing !== '') { tableContents += `
-  * [Contributing](#contributing)` };
+function generateMarkdown(data) {
+  return `# ${data.title}
+${renderLicenseBadge(data.license)}
 
-  if (userResponses.tests !== '') { tableContents += `
-  * [Tests](#tests)` };
+## Description
 
+${data.description}
 
-  // markdown for the README
-  let draftMarkdown = 
-  `# ${userResponses.title}
-  ![Badge for GitHub repo top language](https://img.shields.io/github/languages/top/${userResponses.username}/${userResponses.repo}?style=flat&logo=appveyor) ![Badge for GitHub last commit](https://img.shields.io/github/last-commit/${userResponses.username}/${userResponses.repo}?style=flat&logo=appveyor)
-  
-  
-  ## Description 
-  
-  ${userResponses.description}
-  `
+## Table of Contents 
 
-  // add table of contents to markdown
-  draftMarkdown += tableContents;
- 
-  // add license section since
-  draftMarkdown += `
-  * [License](#license)`;
-  
+* [Installation](#installation)
 
-  // installation 
-  if (userResponses.installation !== '') {
-  
-  draftMarkdown +=
-  `
-  ## Installation
-  
-  ${userResponses.installation}`
-  };
-  
-  // usage 
-  if (userResponses.usage !== '') {
-  
-  draftMarkdown +=
-  
-  `
-  ## Usage 
-    
-  ${userResponses.usage}`
-  };
-  
-  
-  // contributing 
-  if (userResponses.contributing !== '') {
-  `
-  
-  ## Contributing
-    
-  ${userResponses.contributing}`
-  };
-  
+* [Usage](#usage)
+${renderLicenseLink(data.license)}
+* [Contributing](#contributing)
 
-  // tests 
-  if (userResponses.tests !== '') {
+* [Tests](#tests)
+
+* [Questions](#questions)
+
+## Installation
+
+To install dependencies, run the following command:
+
+${data.installation}
+
+## Usage
+
+${data.usage}
+
+${renderLicenseSection(data.license)}
   
-  draftMarkdown +=
-  `
-  
-  ## Tests
-  
-  
-  ${userResponses.tests}`
-  };
+## Contributing
+
+${data.contributing}
+
+## Tests
+
+To run tests, run the following command:
+
+${data.test}
 
 
-  // license 
-  draftMarkdown +=
-  `
-  
-  ## License
-  
-  ${userResponses.license}
-  `;
+## Questions
 
+If you have any questions about the repo contact me directly at ${data.email}. 
+You can find more of my work at [${data.github}](https://github.com/${data.github}/).
 
-  // questions 
-  let draftDev = 
-  `
-  ---
-  
-  ## Questions?
-  
-  For any questions, please contact me with the information below:
- 
-  GitHub: [@${userInfo.login}](${userInfo.url})
-  `;
-
-  
-  if (userInfo.email !== null) {
-  
-  draftDev +=
-  `
-  Email: ${userInfo.email}
-  `};
-
-
-  draftMarkdown += draftDev;
-  return draftMarkdown;
-  
+`;
 }
 
 module.exports = generateMarkdown;

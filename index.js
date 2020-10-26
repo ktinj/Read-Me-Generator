@@ -1,131 +1,73 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
-const util = require('util');
+const path = require('path');
 const generateMarkdown = require('./generateMarkdown.js');
 
 // array of questions for user
 const questions = [
     {
-        type: 'input',
-        message: 'What is the title of your project?',
-        name: 'title',
-        default: 'Project Title',
-        validate: function (answer) {
-            if (answer.length < 1) {
-                return console.log("A valid project title is required.");
-            }
-            return true;
-            }
-        },
-        {
-        type: 'input',
-        message: 'Describe your project',
-        name: 'description',
-        default: 'Project Description',
-        validate: function (answer) {
-            if (answer.length < 1) {
-                return console.log("A valid project description is required.");
-            }
-            return true;
-        }
-        },
-        {
-            type: 'input',
-            message: 'Include GitHub Repo',
-            name: 'username',
-            default: 'ktinj',
-            validate: function (answer) {
-                if (answer.length < 1) {
-                    return console.log("A valid GitHub username is required.");
-                }
-                return true;
-                }
-            },
-            {
-                type: 'input',
-                message: "Describe the steps required for installation.",
-                name: 'installation'
-            },
-            {
-                type: 'input',
-                message: "Provide instructions and examples of usage.",
-                name: 'usage'
-            },
-            {
-                type: 'input',
-                message: "Provide guidelines for contributors.",
-                name: 'contributing'
-            },
-            {
-                type: 'input',
-                message: "Provide any tests written for the application.",
-                name: 'tests'
-            },
-            {
-                type: 'input',
-                message: "Enter a license for your project.",
-                name: 'license'
-            },
-            {
-                type: 'input',
-                message: "Questions?",
-                name: 'questions'
-            }
-];
-
- // call GitHub api
-const axios = require('axios');
-
-const api = {
-  async getUser(userResponses) {
-    try { let response = await axios
+        type: "input",
+        name: "title",
+        message: "What is your project's name?",
+    },
+    {
+        type: "input",
+        name: "description",
+        message: "Please include a short description of your project",
+    },
+    {
+        type: "input",
+        name: "github",
+        message: "What is your GitHub username?",
+    },
+    {
+        type: "input",
+        name: "email",
+        message: "What is your email address?",
+    },
     
-        .get(`https://api.github.com/users/${userResponses.username}`);
-        return response.data;
-
-      } catch (error) {
-        console.log(error);
-      }
-  }
-};
-
-module.exports = api;
+    {
+        type: "list",
+        name: "license",
+        message: "What kind of license should your project have?",
+        choices: ["MIT", "APACHE 2.0", "GPL 3.0", "BSD 3", "None"],
+    },
+    {
+        type: "input",
+        name: "installation",
+        message: "What command should be run to install dependencies?",
+        default: "npm i",
+    },
+    {
+        type: "input",
+        name: "test",
+        message: "What command should be run to run tests?",
+        default: "npm test",
+    },
+    {
+        type: "input",
+        name: "usage",
+        message: "What does the user need to know about using the repo?",
+    },
+    {
+        type: "input",
+        name: "contributing",
+        message: "What does the user need to know about contributing to the repo?",
+    },
+    ];
 
 // function to write README file
 function writeToFile(fileName, data) {
-    fs.writeFile(fileName, data, err => {
-    if (err) {
-        return console.log(err);
-      }
-    
-      console.log("Your README.md file has been generated")
-  });
-
-const writeFileAsync = util.promisify(writeToFile);
-
-// function to initialize program
-async function init() {
-
-    try {
-
-        // Prompt Inquirer questions
-        const userResponses = await inquirer.prompt(questions);
-        console.log("Your responses: ", userResponses);
-
-         // Call GitHub api for user info
-         const userInfo = await api.getUser(userResponses);
-         console.log("Your GitHub user info: ", userInfo);
-     
-         // Pass Inquirer userResponses and GitHub userInfo to generateMarkdown
-         console.log("Generating your README")
-         const markdown = generateMarkdown(userResponses, userInfo);
-         console.log(markdown);
-     
-         // Write markdown to file
-         await writeFileAsync('ExampleREADME.md', markdown);
- 
-     } catch (error) {
-         console.log(error);
-     }
- }
-};
+    return fs.writeFileSync(path.join(process.cwd(), fileName), data);
+  }
+  
+  function init() {
+    inquirer.prompt(questions).then((inquirerResponses) => {
+      console.log(inquirerResponses);
+      console.log("Generating README...");
+      writeToFile("README.md", generateMarkdown({ ...inquirerResponses }));
+    });
+  }
+  
+  init();
+  
